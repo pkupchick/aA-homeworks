@@ -96,11 +96,3 @@ class Map
     end
 end
 
-map = Map.new
-
-map.set("eggs",6)
-map.set("ham",3)
-map.set("milk",1)
-map.set("bread", 2)
-p map.find_key_index("milk")
-
