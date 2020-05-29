@@ -56,7 +56,51 @@ class Map
         @array = []
     end
 
-    def set(key, value)
+    def has_key?(key)
+        @array.each do |sub|
+            return true if sub[0] == key
+        end
+        return false
+    end
 
+    def find_key_index(key)
+        (0...@array.length).each do |i|
+            (0...@array.length).each do |j|
+                if @array[i][j] == key
+                    return i
+                end
+            end
+        end
+    end
+
+    def set(key, value)
+        if !has_key?(key)
+            @array << [key, value]
+        else
+            @array[find_key_index(key)][1] = value
+        end
+    end
+
+    def get_value(key)
+        @array.each do |sub|
+            return sub[1] if sub[0] == key
+        end
+    end
+
+    def delete(key)
+        @array.reject! { |sub| sub[0] == key }
+    end
+
+    def show
+        @array.each { |pair| p pair }
     end
 end
+
+map = Map.new
+
+map.set("eggs",6)
+map.set("ham",3)
+map.set("milk",1)
+map.set("bread", 2)
+p map.find_key_index("milk")
+
