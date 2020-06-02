@@ -1,7 +1,11 @@
+require_relative "./player.rb"
+require "byebug"
 class Board
   attr_accessor :cups
 
   def initialize(name1, name2)
+    @player_1 = Player.new(name1, 1)
+    @player_2 = Player.new(name1, 2)
     @cups = Array.new(14) { [] }
     place_stones
   end
@@ -28,23 +32,23 @@ class Board
     @cups[start_pos] = []
 
     start_idx = start_pos
-    until stones.empty?
-      start_idx += 1
+    until stones.empty? 
+      (start_idx += 1) % 14
       if start_idx == 6
-        @cups[6] << stones.shift if current_player_name == @name1
+        @cups[6] << stones.shift if current_player_name == @player_1.name
       elsif start_idx == 13
-        @cups[13] << stones.shift if current_player_name == @name2
+        @cups[13] << stones.shift if current_player_name == @player_2.name
       else
-        @cups[start_idx % @cups.length] << stones.shift
+        @cups[start_idx] << stones.shift
       end
     end
-    render
     next_turn(start_idx)
   end
 
   def next_turn(ending_cup_idx)
+    # debugger
     # helper method to determine whether #make_move returns :switch, :prompt, or ending_cup_idx
-    if @cups[ending_cup_idx].empty?
+    if @cups[ending_cup_idx] == []
       :switch
     elsif ending_cup_idx == 6 || ending_cup_idx == 13
       :prompt
